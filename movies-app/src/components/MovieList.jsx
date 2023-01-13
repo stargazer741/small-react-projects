@@ -2,6 +2,11 @@ import React from "react";
 
 const MovieList = (props) => {
   
+
+    function handleClick(e) {
+        console.log(e.pageX);
+    }
+
     return (
       <div className="row">
         {props.movies.map((movie) => (
@@ -19,6 +24,7 @@ const MovieList = (props) => {
                   <button
                     type="button"
                     className="btn btn-md btn-outline-danger"
+                    onClick={(event) => props.deleteMovieProp(movie)}
                   >
                     Delete
                   </button>
