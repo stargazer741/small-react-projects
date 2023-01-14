@@ -38,6 +38,8 @@ class App extends React.Component {
           "https://www.themoviedb.org/t/p/w220_and_h330_face/gKG5QGz5Ngf8fgWpBsWtlg5L2SF.jpg",
       },
     ],
+
+    searchQuery: "",
   };
 
   deleteMovie = (movie) => {
@@ -52,17 +54,28 @@ class App extends React.Component {
     }));
   };
 
+  searchMovie = (event) => {
+    this.setState({ searchQuery: event.target.value });
+  };
+
   render() {
+    let filteredMovies = this.state.movies.filter((movie) => {
+      return (
+        movie.name
+          .toLowerCase()
+          .indexOf(this.state.searchQuery.toLowerCase()) !== -1
+      );
+    });
+
     return (
       <div className="container">
         <div className="row">
-          <div className="col-lg-12"><SearchBar /></div>
+          <div className="col-lg-12">
+            <SearchBar searchMovieProp={this.searchMovie} />
+          </div>
         </div>
 
-        <MovieList
-          movies={this.state.movies}
-          deleteMovieProp={this.deleteMovie}
-        />
+        <MovieList movies={filteredMovies} deleteMovieProp={this.deleteMovie} />
       </div>
     );
   }
