@@ -2,6 +2,14 @@ import React from "react";
 import SearchBar from "./SearchBar";
 import MovieList from "./MovieList";
 import axios from "axios";
+import AddMovie from "./AddMovie";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
 class App extends React.Component {
   state = {
@@ -42,7 +50,7 @@ class App extends React.Component {
     await fetch(baseURL, {
       method: "DELETE",
     }); */
-    axios.delete(`http://localhost:3002/movies/${movie.id}`)
+    axios.delete(`http://localhost:3002/movies/${movie.id}`);
     const newMovieList = this.state.movies.filter((m) => m.id !== movie.id);
 
     this.setState((state) => ({
@@ -64,15 +72,33 @@ class App extends React.Component {
     });
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-12">
-            <SearchBar searchMovieProp={this.searchMovie} />
-          </div>
-        </div>
 
-        <MovieList movies={filteredMovies} deleteMovieProp={this.deleteMovie} />
-      </div>
+      <Routes>
+      <Router>
+        <div className="container">
+          <Route
+            path="/" exact
+            render={() => (
+              <React.Fragment>
+                <div className="row">
+                  <div className="col-lg-12">
+                    <SearchBar searchMovieProp={this.searchMovie} />
+                  </div>
+                </div>
+
+                <MovieList
+                  movies={filteredMovies}
+                  deleteMovieProp={this.deleteMovie}
+                />
+              </React.Fragment>
+            )}
+          ></Route>
+
+          <Route path="/add" Component={AddMovie} />
+  
+        </div>
+      </Router>
+      </Routes>
     );
   }
 }
